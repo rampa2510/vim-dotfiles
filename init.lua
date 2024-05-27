@@ -279,7 +279,6 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -303,6 +302,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>gtl', builtin.git_commits, { desc = 'List all [G]i[t] [L]ogs' })
+      vim.keymap.set('n', '<leader>gts', builtin.git_status, { desc = 'Show [G]i[t] [S]tatus' })
+      vim.keymap.set('n', '<leader>gtb', builtin.git_status, { desc = 'Show [G]i[t] [B]ranch' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -488,13 +490,15 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         gopls = {
-          completeUnimported = true,
-          usePlaceholders = true,
-          gofumpt = true,
-          analyses = {
-            unusedparams = true,
-            unusedvariable = true,
-            unreachable = true,
+          settings = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            gofumpt = true,
+            analyses = {
+              unusedparams = true,
+              unusedvariable = true,
+              unreachable = true,
+            },
           },
         },
         -- pyright = {},
