@@ -518,8 +518,17 @@ require('lazy').setup({
             gofumpt = true,
             analyses = {
               unusedparams = true,
+              fieldalignment = true,
+              shadow = true,
               unusedvariable = true,
-              unreachable = true,
+            },
+            hints = {
+              assignVariableTypes = true,
+              compositeLiteralFields = true,
+              constantValues = true,
+              functionTypeParameters = true,
+              parameterNames = true,
+              rangeVariableTypes = true,
             },
           },
         },
@@ -854,6 +863,8 @@ require('lazy').setup({
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins.accleratedjk',
+  require 'custom.plugins.oil',
+  require 'custom.plugins.gopher',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
