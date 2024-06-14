@@ -197,24 +197,24 @@ require('lazy').setup({
   -- after the plugin has been loaded:
   --  config = function() ... end
 
-  -- Grapple cofig
-  {
-    'cbochs/grapple.nvim',
-    dependencies = {
-      { 'nvim-tree/nvim-web-devicons', lazy = true },
-    },
-    opts = {
-      scope = 'git', -- also try out "git_branch"
-    },
-    event = { 'BufReadPost', 'BufNewFile' },
-    cmd = 'Grapple',
-    keys = {
-      { '<leader>m', '<cmd>Grapple toggle<cr>', desc = 'Grapple toggle tag' },
-      { '<leader>M', '<cmd>Grapple toggle_tags<cr>', desc = 'Grapple open tags window' },
-      { '<leader>n', '<cmd>Grapple cycle_tags next<cr>', desc = 'Grapple cycle next tag' },
-      { '<leader>p', '<cmd>Grapple cycle_tags prev<cr>', desc = 'Grapple cycle previous tag' },
-    },
-  },
+  -- -- Grapple cofig
+  -- {
+  --   'cbochs/grapple.nvim',
+  --   dependencies = {
+  --     { 'nvim-tree/nvim-web-devicons', lazy = true },
+  --   },
+  --   opts = {
+  --     scope = 'git', -- also try out "git_branch"
+  --   },
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   cmd = 'Grapple',
+  --   keys = {
+  --     { '<leader>m', '<cmd>Grapple toggle<cr>', desc = 'Grapple toggle tag' },
+  --     { '<leader>M', '<cmd>Grapple toggle_tags<cr>', desc = 'Grapple open tags window' },
+  --     { '<leader>n', '<cmd>Grapple cycle_tags next<cr>', desc = 'Grapple cycle next tag' },
+  --     { '<leader>p', '<cmd>Grapple cycle_tags prev<cr>', desc = 'Grapple cycle previous tag' },
+  --   },
+  -- },
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
@@ -301,6 +301,16 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
+        pickers = {
+          buffers = {
+            disable = true,
+            mappings = {
+              i = {
+                ['<c-d>'] = require('telescope.actions').delete_buffer,
+              },
+            },
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -860,11 +870,12 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins.accleratedjk',
   require 'custom.plugins.oil',
   require 'custom.plugins.gopher',
+  require 'custom.plugins.markdown',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
