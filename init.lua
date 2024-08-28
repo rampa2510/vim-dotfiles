@@ -147,6 +147,8 @@ vim.opt.rtp:prepend(lazypath)
 --  To update plugins you can run
 --    :Lazy update
 --
+--
+--
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -289,6 +291,14 @@ require('lazy').setup({
       -- This opens a window that shows you all of the keymaps for the current
       -- Telescope picker. This is really useful to discover what Telescope can
       -- do as well as how to actually do it!
+      local actions = require 'telescope.actions'
+
+      local custom_actions = {}
+
+      function custom_actions.smart_send_to_qflist_and_open(prompt_bufnr)
+        actions.smart_send_to_qflist(prompt_bufnr)
+        actions.open_qflist(prompt_bufnr)
+      end
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
@@ -296,11 +306,16 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = {
+              ['<c-enter>'] = 'to_fuzzy_refine',
+              ['<C-Q>'] = function(prompt_bufnr)
+                custom_actions.smart_send_to_qflist_and_open(prompt_bufnr)
+              end,
+            },
+          },
+        },
         pickers = {
           buffers = {
             disable = true,
@@ -551,6 +566,15 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
         tsserver = {},
+        prettier = {
+          filetypes = {
+            'javascript',
+            'javascriptreact',
+            'typescript',
+            'typescriptreact',
+            'json',
+          },
+        },
         ruby_lsp = {
           cmd = { 'bundle', 'exec', 'ruby-lsp' },
           init_options = {
