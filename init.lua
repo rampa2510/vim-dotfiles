@@ -441,8 +441,24 @@ require('lazy').setup({
           --  To jump back, press <C-t>.
           map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
+          -- New mapping: Open definition in vertical split
+          map('gvd', function()
+            -- Create a vertical split
+            vim.cmd.vsplit()
+            -- Go to definition in the new split
+            require('telescope.builtin').lsp_definitions()
+          end, '[G]oto [V]ertical [D]efinition')
+
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+
+          -- New mapping: Open definition in vertical split
+          map('gvr', function()
+            -- Create a vertical split
+            vim.cmd.vsplit()
+            -- Go to definition in the new split
+            require('telescope.builtin').lsp_references()
+          end, '[G]oto [V]ertical [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
