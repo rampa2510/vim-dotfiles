@@ -4,5 +4,7 @@ return {
   dependencies = { 'nvim-treesitter/nvim-treesitter' },
   config = function()
     require('render-markdown').setup {}
+
+    vim.keymap.set('n', '<leader>md', require('render-markdown').toggle, { desc = 'Toggle render markdown' })
   end,
 }
