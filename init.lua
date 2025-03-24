@@ -583,20 +583,48 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
         eslint = {
           filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
           settings = {
             packageManager = 'npm',
             workingDirectory = { mode = 'auto' },
-            format = true, -- Enable auto formatting
+            format = true,
             codeActionOnSave = {
               enable = true,
               mode = 'all',
             },
           },
-          root_dir = require('lspconfig.util').find_git_ancestor,
+          root_dir = function(fname)
+            local util = require 'lspconfig.util'
+
+            -- Check for ESLint config files first
+            local eslint_config_patterns = {
+              '.eslintrc',
+              '.eslintrc.js',
+              '.eslintrc.json',
+              '.eslintrc.yaml',
+              '.eslintrc.yml',
+              'eslint.config.js',
+              'eslint.config.mjs',
+              'package.json',
+            }
+
+            -- Try to find the ESLint config first
+            local eslint_root = util.root_pattern(unpack(eslint_config_patterns))(fname)
+
+            -- If ESLint config not found, try the Git root using non-deprecated method
+            local git_root = nil
+            local git_file = vim.fs.find('.git', { path = fname, upward = true })[1]
+            if git_file then
+              git_root = vim.fs.dirname(git_file)
+            end
+
+            -- Return the first found directory, or current working directory as fallback
+            return eslint_root or git_root or vim.fn.getcwd()
+          end,
         },
+
         prettier = {
           filetypes = {
             'javascript',
@@ -701,16 +729,28 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- For JavaScript/TypeScript files, try eslint first, then prettier
-        javascript = { 'eslint', 'prettier' },
-        typescript = { 'eslint', 'prettier' },
-        javascriptreact = { 'eslint', 'prettier' },
-        typescriptreact = { 'eslint', 'prettier' },
+        -- For JavaScript/TypeScript files, use only ESLint to follow .eslintrc.json rules
+        javascript = { 'eslint' },
+        typescript = { 'eslint' },
+        javascriptreact = { 'eslint' },
+        typescriptreact = { 'eslint' },
         json = { 'prettier' },
+      },
+      -- Optional: Configure ESLint specifically
+      formatters = {
+        eslint = {
+          -- You can add additional ESLint configuration here if needed
+          -- This will ensure ESLint strictly uses your .eslintrc.json rules
+          args = {
+            '--fix-to-stdout',
+            '--stdin',
+            '--stdin-filename',
+            '$FILENAME',
+          },
+        },
       },
     },
   },
-
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
