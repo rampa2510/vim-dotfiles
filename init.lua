@@ -583,7 +583,20 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        ts_ls = {},
+        -- ts_ls = {},
+        eslint = {
+          filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+          settings = {
+            packageManager = 'npm',
+            workingDirectory = { mode = 'auto' },
+            format = true, -- Enable auto formatting
+            codeActionOnSave = {
+              enable = true,
+              mode = 'all',
+            },
+          },
+          root_dir = require('lspconfig.util').find_git_ancestor,
+        },
         prettier = {
           filetypes = {
             'javascript',
@@ -642,6 +655,7 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettier',
+        'eslint',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -687,14 +701,12 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
-        --
-        -- You can use a sub-list to tell conform to run *until* a formatter
-        -- is found.
-        javascript = {
-          stop_after_first = true,
-        },
+        -- For JavaScript/TypeScript files, try eslint first, then prettier
+        javascript = { 'eslint', 'prettier' },
+        typescript = { 'eslint', 'prettier' },
+        javascriptreact = { 'eslint', 'prettier' },
+        typescriptreact = { 'eslint', 'prettier' },
+        json = { 'prettier' },
       },
     },
   },
@@ -808,6 +820,17 @@ require('lazy').setup({
         },
       }
     end,
+  },
+  {
+    dir = '/Users/rampandey/Desktop/personal/nvim-sops',
+    event = { 'BufEnter' },
+    opts = {
+      awsProfile = 'd3x',
+    },
+    keys = {
+      { '<leader>ef', vim.cmd.SopsEncrypt, desc = '[E]ncrypt [F]ile' },
+      { '<leader>df', vim.cmd.SopsDecrypt, desc = '[D]ecrypt [F]ile' },
+    },
   },
 
   { -- You can easily change to a different colorscheme.
