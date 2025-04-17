@@ -111,6 +111,15 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Replace inside delimiters with register content without changing registers
+vim.keymap.set('n', '<leader>ri"', '"_ci"<C-r>0<Esc>', { desc = 'Replace inside double quotes with register' })
+vim.keymap.set('n', "<leader>ri'", '"_ci\'<C-r>0<Esc>', { desc = 'Replace inside single quotes with register' })
+vim.keymap.set('n', '<leader>ri(', '"_ci(<C-r>0<Esc>', { desc = 'Replace inside parentheses with register' })
+vim.keymap.set('n', '<leader>ri{', '"_ci{<C-r>0<Esc>', { desc = 'Replace inside curly braces with register' })
+vim.keymap.set('n', '<leader>ri[', '"_ci[<C-r>0<Esc>', { desc = 'Replace inside square brackets with register' })
+vim.keymap.set('n', '<leader>ri<', '"_ci<<C-r>0<Esc>', { desc = 'Replace inside angle brackets with register' })
+vim.keymap.set('n', '<leader>rit', '"_cit<C-r>0<Esc>', { desc = 'Replace inside tags with register' })
+
 -- misc commands
 vim.keymap.set('n', '<C-c>', '<cmd> %y+ <CR>', { desc = 'Copy whole File' })
 
@@ -574,7 +583,18 @@ require('lazy').setup({
             },
           },
         },
-        pyright = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = 'workspace',
+              },
+              venvPath = '.',
+            },
+          },
+        },
         ruff = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -727,27 +747,15 @@ require('lazy').setup({
           lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
         }
       end,
+      -- In your conform.nvim configuration
       formatters_by_ft = {
         lua = { 'stylua' },
-        -- For JavaScript/TypeScript files, use only ESLint to follow .eslintrc.json rules
+        -- For JavaScript/TypeScript files, use prettier followed by eslint
         javascript = { 'eslint' },
         typescript = { 'eslint' },
-        javascriptreact = { 'eslint' },
-        typescriptreact = { 'eslint' },
+        javascriptreact = { 'prettier', 'eslint' },
+        typescriptreact = { 'prettier', 'eslint' },
         json = { 'prettier' },
-      },
-      -- Optional: Configure ESLint specifically
-      formatters = {
-        eslint = {
-          -- You can add additional ESLint configuration here if needed
-          -- This will ensure ESLint strictly uses your .eslintrc.json rules
-          args = {
-            '--fix-to-stdout',
-            '--stdin',
-            '--stdin-filename',
-            '$FILENAME',
-          },
-        },
       },
     },
   },
