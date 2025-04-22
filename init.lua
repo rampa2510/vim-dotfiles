@@ -112,13 +112,13 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Replace inside delimiters with register content without changing registers
-vim.keymap.set('n', '<leader>ri"', '"_ci"<C-r>0<Esc>', { desc = 'Replace inside double quotes with register' })
-vim.keymap.set('n', "<leader>ri'", '"_ci\'<C-r>0<Esc>', { desc = 'Replace inside single quotes with register' })
-vim.keymap.set('n', '<leader>ri(', '"_ci(<C-r>0<Esc>', { desc = 'Replace inside parentheses with register' })
-vim.keymap.set('n', '<leader>ri{', '"_ci{<C-r>0<Esc>', { desc = 'Replace inside curly braces with register' })
-vim.keymap.set('n', '<leader>ri[', '"_ci[<C-r>0<Esc>', { desc = 'Replace inside square brackets with register' })
-vim.keymap.set('n', '<leader>ri<', '"_ci<<C-r>0<Esc>', { desc = 'Replace inside angle brackets with register' })
-vim.keymap.set('n', '<leader>rit', '"_cit<C-r>0<Esc>', { desc = 'Replace inside tags with register' })
+vim.keymap.set('n', '<leader>ri"', '"_ci"<C-r>*<Esc>', { desc = 'Replace inside double quotes with register' })
+vim.keymap.set('n', "<leader>ri'", '"_ci\'<C-r>*<Esc>', { desc = 'Replace inside single quotes with register' })
+vim.keymap.set('n', '<leader>ri(', '"_ci(<C-r>*<Esc>', { desc = 'Replace inside parentheses with register' })
+vim.keymap.set('n', '<leader>ri{', '"_ci{<C-r>*<Esc>', { desc = 'Replace inside curly braces with register' })
+vim.keymap.set('n', '<leader>ri[', '"_ci[<C-r>*<Esc>', { desc = 'Replace inside square brackets with register' })
+vim.keymap.set('n', '<leader>ri<', '"_ci<<C-r>*<Esc>', { desc = 'Replace inside angle brackets with register' })
+vim.keymap.set('n', '<leader>rit', '"_cit<C-r>*<Esc>', { desc = 'Replace inside tags with register' })
 
 -- misc commands
 vim.keymap.set('n', '<C-c>', '<cmd> %y+ <CR>', { desc = 'Copy whole File' })
@@ -989,6 +989,7 @@ require('lazy').setup({
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins.accleratedjk',
   require 'custom.plugins.oil',
+  require 'custom.plugins.gitdiff',
   require 'custom.plugins.gopher',
   require 'custom.plugins.markdown',
 
